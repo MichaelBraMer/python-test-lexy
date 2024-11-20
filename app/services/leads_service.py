@@ -1,4 +1,6 @@
 from app.utils.request_helper import make_request
+from app.utils.log_leads import log_new_leads, log_error_leads
+
 import os
 
 def fetch_data():
@@ -8,4 +10,8 @@ def fetch_data():
         'Content-Type': 'application/json'
     }
     response = make_request(f'{CRM_API_URL}&apiKey={CRM_API_KEY}', headers)
+    if response.get("status") == "ok":
+        log_new_leads()
+    else:
+        log_error_leads()
     return response
